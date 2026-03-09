@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+const API = `${import.meta.env.VITE_API_URL}/api/tasks`;
 
 function getPriority(task) {
   if (task.priority) return task.priority;
@@ -186,7 +187,7 @@ export default function Tasks() {
       setError(null);
 
       try {
-        const res = await fetch("/api/tasks", { signal: controller.signal });
+        const res = await fetch(API, { signal: controller.signal });
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const data = await res.json();
         setTasks(data.tasks ?? []);
@@ -204,7 +205,7 @@ export default function Tasks() {
   }, []);
 
   const createTask = async (title) => {
-    const res = await fetch("/api/tasks", {
+    const res = await fetch(API, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ title }),
@@ -220,7 +221,7 @@ export default function Tasks() {
   };
 
   const updateTask = async (task, changes) => {
-    const res = await fetch(`/api/tasks/${task.id}`, {
+    const res = await fetch(`${API}/${task.id}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(changes),
@@ -238,7 +239,7 @@ export default function Tasks() {
   };
 
   const deleteTask = async (task) => {
-    const res = await fetch(`/api/tasks/${task.id}`, { method: "DELETE" });
+    const res = await fetch(`${API}/${task.id}`, { method: "DELETE" });
     if (!res.ok) {
       const { error } = await res.json();
       throw new Error(error || `HTTP ${res.status}`);
