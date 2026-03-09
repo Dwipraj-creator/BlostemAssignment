@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-const API = `${import.meta.env.VITE_API_URL}/api/tasks`;
+const API = "https://blostemassignment.onrender.com/api/tasks";
 
 function getPriority(task) {
   if (task.priority) return task.priority;
